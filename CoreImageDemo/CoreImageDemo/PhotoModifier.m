@@ -56,7 +56,7 @@
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
     
     [self.filter setValue:image forKey:kCIInputImageKey];
-    [self.filter setValue:@70.1f forKey:kCIInputRadiusKey];
+    [self.filter setValue:@17.1f forKey:kCIInputRadiusKey];
     
     CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
 
@@ -67,7 +67,7 @@
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
 
     [self.filter setValue:image forKey:kCIInputImageKey];
-    [self. filter setValue:@20.0f forKey:kCIInputRadiusKey];
+    [self. filter setValue:@10.0f forKey:kCIInputRadiusKey];
     CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
    
     return [self getImage:result];
@@ -77,7 +77,7 @@
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
     
     [self.filter setValue:image forKey:kCIInputImageKey];
-    [self.filter setValue:@31.0f forKey:kCIInputRadiusKey];
+    [self.filter setValue:@17.0f forKey:kCIInputRadiusKey];
     
     CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
     
@@ -172,11 +172,41 @@
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
     
     [self.filter setValue:image forKey:kCIInputImageKey];
-    CGAffineTransform xform = CGAffineTransformMake(1, 1, 0.5, 1, 100, 10);
+    CGAffineTransform xform = CGAffineTransformMake(0.7, 0, 0.5, 0.7, 100, 0);
     [self.filter setValue:[NSValue valueWithBytes:&xform
                                          objCType:@encode(CGAffineTransform)] forKey:kCIInputTransformKey];
     CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
-    CGImageRef rImage = [self.myContext createCGImage:result fromRect:CGRectMake(0, 0, 1090, 1920)];
-    return [UIImage imageWithCGImage:rImage];
+    
+    CGImageRef rImage = [self.myContext createCGImage:result fromRect:CGRectMake(0, 0,img.size.width, img.size.height)];
+    UIImage *rImg = [UIImage imageWithCGImage:rImage];
+    CGImageRelease(rImage);
+    return rImg;
+}
+
+// CIColorClamp颜色调整
+- (UIImage *)CIColorClamp:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:[CIVector vectorWithX:0.9 Y:0.7 Z:0.6 W:1] forKey:@"inputMaxComponents"];
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+    
+    return [self getImage:result];
+}
+
+// CIAffineTile循环多图
+- (UIImage *)CIAffineTile:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    CGAffineTransform xform = CGAffineTransformMake(0.2, 0, 0, 0.2, 100, 0);
+    [self.filter setValue:[NSValue valueWithBytes:&xform
+                                         objCType:@encode(CGAffineTransform)] forKey:kCIInputTransformKey];
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+    
+    CGImageRef rImage = [self.myContext createCGImage:result fromRect:CGRectMake(0, 0,img.size.width, img.size.height)];
+    UIImage *rImg = [UIImage imageWithCGImage:rImage];
+    CGImageRelease(rImage);
+    return rImg;
 }
 @end

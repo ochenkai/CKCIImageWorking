@@ -25,8 +25,13 @@
     self.objects = [NSMutableArray new];
     // 模糊效果
     [self.objects addObject:[@{@"data":@[@"CIBoxBlur",@"CIDiscBlur",@"CIGaussianBlur",@"CIMedianFilter",@"CIZoomBlur"],@"isOpen":@YES,@"title":@"模糊效果"} mutableCopy]];
-    // 内建滤镜
-    [self.objects addObject:[@{@"data":@[@"CISepiaTone",@"CIHueAdjust",@"CIBumpDistortion",@"CIAccordionFoldTransition",@"CIAdditionCompositing",@"CIAffineClamp"],@"isOpen":@YES,@"title":@"内建预置滤镜效果"} mutableCopy]];
+    // 颜色处理
+    [self.objects addObject:[@{@"data":@[@"CISepiaTone",@"CIHueAdjust",@"CIColorClamp"],@"isOpen":@YES,@"title":@"颜色处理"} mutableCopy]];
+    //
+    // 图片仿射
+     [self.objects addObject:[@{@"data":@[@"CIBumpDistortion",@"CIAffineClamp",@"CIAffineTile"],@"isOpen":@YES,@"title":@"仿射扭曲"} mutableCopy]];
+    // 两图叠加变换
+     [self.objects addObject:[@{@"data":@[@"CIAccordionFoldTransition",@"CIAdditionCompositing"],@"isOpen":@YES,@"title":@"内建预置滤镜效果"} mutableCopy]];
     // Do any additional setup after loading the view, typically from a nib.
 
     
@@ -68,6 +73,7 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 300, 40)];
+    view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
     view.tag = 1000 + section;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapSection:)];
     [view addGestureRecognizer:tap];
