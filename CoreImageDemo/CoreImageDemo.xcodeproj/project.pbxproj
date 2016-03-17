@@ -16,6 +16,7 @@
 		D666CD091C99B95200BE0E1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D666CD071C99B95200BE0E1D /* LaunchScreen.storyboard */; };
 		D666CD121C99BD0C00BE0E1D /* PhotoModifier.m in Sources */ = {isa = PBXBuildFile; fileRef = D666CD111C99BD0C00BE0E1D /* PhotoModifier.m */; };
 		D6E3F0761C9A74C20047462D /* sunli.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D6E3F0751C9A74C20047462D /* sunli.jpeg */; };
+		D6E3F0B01C9AC4490047462D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D6E3F09D1C9AC4490047462D /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,8 @@
 		D666CD101C99BD0C00BE0E1D /* PhotoModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoModifier.h; sourceTree = "<group>"; };
 		D666CD111C99BD0C00BE0E1D /* PhotoModifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoModifier.m; sourceTree = "<group>"; };
 		D6E3F0751C9A74C20047462D /* sunli.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sunli.jpeg; sourceTree = "<group>"; };
+		D6E3F09C1C9AC4490047462D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		D6E3F09D1C9AC4490047462D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +77,7 @@
 				D666CD001C99B95200BE0E1D /* DetailViewController.m */,
 				D666CD101C99BD0C00BE0E1D /* PhotoModifier.h */,
 				D666CD111C99BD0C00BE0E1D /* PhotoModifier.m */,
+				D6E3F09A1C9AC4490047462D /* Vendors */,
 				D666CD021C99B95200BE0E1D /* Main.storyboard */,
 				D6E3F0751C9A74C20047462D /* sunli.jpeg */,
 				D666CD051C99B95200BE0E1D /* Assets.xcassets */,
@@ -90,6 +94,23 @@
 				D666CCF71C99B95200BE0E1D /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D6E3F09A1C9AC4490047462D /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				D6E3F09B1C9AC4490047462D /* MBProgressHUD */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		D6E3F09B1C9AC4490047462D /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				D6E3F09C1C9AC4490047462D /* MBProgressHUD.h */,
+				D6E3F09D1C9AC4490047462D /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,6 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D666CCFB1C99B95200BE0E1D /* AppDelegate.m in Sources */,
+				D6E3F0B01C9AC4490047462D /* MBProgressHUD.m in Sources */,
 				D666CD121C99BD0C00BE0E1D /* PhotoModifier.m in Sources */,
 				D666CCFE1C99B95200BE0E1D /* MasterViewController.m in Sources */,
 				D666CCF81C99B95200BE0E1D /* main.m in Sources */,
@@ -277,6 +299,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				INFOPLIST_FILE = CoreImageDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lanou3g.CoreImageDemo;
@@ -288,6 +311,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				INFOPLIST_FILE = CoreImageDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lanou3g.CoreImageDemo;

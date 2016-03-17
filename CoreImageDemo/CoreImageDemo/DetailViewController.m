@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "PhotoModifier.h"
+#import "MBProgressHUD.h"
 @interface DetailViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @end
@@ -30,9 +31,14 @@
     if (self.detailItem) {
         self.title = self.detailItem;
         self.detailDescriptionLabel.text = [self.detailItem description];
+        self.imageView.layer.borderColor = [UIColor darkGrayColor].CGColor;
+        self.imageView.layer.borderWidth = 1;
     }
 }
 - (IBAction)tapImageViewGesture:(id)sender {
+    NSLog(@"tap");
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
     // 点击ImageView弹出选图
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
     imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -44,16 +50,17 @@
     UIImage *image = info[UIImagePickerControllerOriginalImage];
 //    NSLog(@"%@",image);
     self.imageView.image = image;
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
+    [self dismissViewControllerAnimated:YES completion:^{
+    }];
     [self performSelectorInBackground:@selector(configFilter) withObject:nil];
 }
 - (void)configFilter {
-    UIImage *image = self.imageView.image;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIImage *reImage = [PhotoModifier modifyImage:image WithFilterName:self.detailItem];
-        self.imageView.image = reImage;
-    });
+
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        UIImage *reImage = [PhotoModifier modifyImage:self.imageView.image WithFilterName:self.detailItem];
+            self.imageView.image = reImage;
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        });
 }
 
 - (void)viewDidLoad {

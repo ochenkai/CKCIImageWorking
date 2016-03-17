@@ -8,9 +8,10 @@
 
 #import "PhotoModifier.h"
 #import <CoreImage/CoreImage.h>
-
+#import <objc/objc-runtime.h>
 @interface PhotoModifier ()
 @property (nonatomic, strong) CIContext *myContext;
+@property (nonatomic, strong) CIFilter *filter;
 
 @end
 @implementation PhotoModifier
@@ -23,8 +24,10 @@
     return _myContext;
 }
 + (UIImage *)modifyImage:(UIImage *)image WithFilterName:(NSString *)filterName {
-   SEL selector = NSSelectorFromString([NSString stringWithFormat:@"%@:",filterName]);
-    return [[PhotoModifier shareModifier] performSelector:selector withObject:image];
+    [[PhotoModifier shareModifier]setFilterName:filterName];
+    NSString *selectorName = [NSString stringWithFormat:@"%@:",filterName];
+    
+    return objc_msgSend([PhotoModifier shareModifier],sel_registerName(selectorName.UTF8String),image);
 }
 + (instancetype)shareModifier {
     static PhotoModifier *modifier = nil;
@@ -35,62 +38,107 @@
     }
     return modifier;
 }
+#pragma mark getter FilterName 
+- (void)setFilterName:(NSString *)name {
+    self.filter = [CIFilter filterWithName:name];
+    [self.filter setDefaults];
+}
+- (UIImage *)getImage:(CIImage *)ciImg {
+    CGRect extent = ciImg.extent;
+    CGImageRef rImage = [self.myContext createCGImage:ciImg fromRect:extent];
+    UIImage *rImg = [UIImage imageWithCGImage:rImage];
+    CGImageRelease(rImage);
+    return rImg;
+}
+#pragma mark - 模糊效果 Blur
+// CIBoxBlur均值模糊
+- (UIImage *)CIBoxBlur:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:@70.1f forKey:kCIInputRadiusKey];
+    
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+
+    return [self getImage:result];
+}
+// 圆盘形状内模糊化图像
+- (UIImage *)CIDiscBlur:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self. filter setValue:@20.0f forKey:kCIInputRadiusKey];
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+   
+    return [self getImage:result];
+}
+// 高斯模糊
+- (UIImage *)CIGaussianBlur:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:@31.0f forKey:kCIInputRadiusKey];
+    
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+    
+    return [self getImage:result];
+}
+// 差值模糊
+- (UIImage *)CIMedianFilter:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    CIImage *rImg = [self.filter valueForKey:kCIOutputImageKey];
+    return [self getImage:rImg];
+}
+
+// Zoom模糊 聚焦拉伸
+- (UIImage *)CIZoomBlur:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:[CIVector vectorWithX:img.size.width/2.0 Y:img.size.height/2.0] forKey:kCIInputCenterKey];
+    [self.filter setValue:@7.0 forKey:@"inputAmount"];
+    
+    CIImage *rImage = [self.filter valueForKey:kCIOutputImageKey];
+    return [self getImage:rImage];
+}
 // 褐色滤光镜
 - (UIImage *)CISepiaTone:(UIImage *)img {
     
-    CIImage *image = [CIImage imageWithCGImage:img.CGImage];               // 2
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
     
-    CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];
-    [filter setDefaults];
+    [self.filter setValue:image forKey:kCIInputImageKey];
     
-    [filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:@0.9f forKey:kCIInputIntensityKey];
     
-    [filter setValue:@0.9f forKey:kCIInputIntensityKey];
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
     
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];              // 4
-    
-    CGRect extent = [result extent];
-    
-    CGImageRef cgImage = [self.myContext createCGImage:result fromRect:extent];   // 5
-    UIImage *rImg = [UIImage imageWithCGImage:cgImage];
-    
-    CGImageRelease(cgImage);
-    return rImg;
+    return [self getImage:result];
 }
 
 // 色调调整滤镜
 - (UIImage *)CIHueAdjust:(UIImage *)img {
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:@"CIHueAdjust"];
-    [filter setDefaults];
-
-    [filter setValue:image forKey:kCIInputImageKey];
-    [filter setValue:@1.6f forKey:kCIInputAngleKey];
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];              // 4
-    CGRect extent = [result extent];
-    CGImageRef cgImage = [self.myContext createCGImage:result fromRect:extent];   // 5
-    UIImage *rImg = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    return rImg;
+   
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:@1.6f forKey:kCIInputAngleKey];
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+    return [self getImage:result];
 }
 
 // 凹凸效果滤镜
 - (UIImage *)CIBumpDistortion:(UIImage *)img {
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:@"CIBumpDistortion"];
-    [filter setDefaults];
     
-    [filter setValue:image forKey:kCIInputImageKey];
-    [filter  setValue:[CIVector vectorWithX:img.size.width/2.0 Y:img.size.height/2.0]forKey: kCIInputCenterKey];
-    [filter setValue:@(img.size.width/121.0) forKey:kCIInputScaleKey];
-    [filter setValue:@(img.size.width/4) forKey:kCIInputRadiusKey];
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter  setValue:[CIVector vectorWithX:img.size.width/2.0 Y:img.size.height/2.0]forKey: kCIInputCenterKey];
+    [self.filter setValue:@(img.size.width/121.0) forKey:kCIInputScaleKey];
+    [self.filter setValue:@(img.size.width/4) forKey:kCIInputRadiusKey];
     
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];              // 4
-    CGRect extent = [result extent];
-    CGImageRef cgImage = [self.myContext createCGImage:result fromRect:extent];   // 5
-    UIImage *rImg = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    return rImg;
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+
+    return [self getImage:result];
 }
 
 // 褶皱过度
@@ -98,18 +146,37 @@
     CIImage *image = [CIImage imageWithCGImage:img.CGImage];
     UIImage *targetImg = [UIImage imageNamed:@"sunli.jpeg"];
     CIImage *targetImage = [CIImage imageWithCGImage:targetImg.CGImage];
-    CIFilter *filter = [CIFilter filterWithName:@"CIAccordionFoldTransition"];
-    [filter setDefaults];
-    
-    [filter setValue:image forKey:kCIInputImageKey];
-    [filter setValue:targetImage forKey:kCIInputTargetImageKey];
-    [filter setValue:@(0.5) forKey:kCIInputTimeKey];
 
-    CIImage *result = [filter valueForKey:kCIOutputImageKey];
-    CGRect extent = [result extent];
-    CGImageRef rImage = [self.myContext createCGImage:result fromRect:extent];
-    UIImage *rImg = [UIImage imageWithCGImage:rImage];
-    CGImageRelease(rImage);
-    return rImg;
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    [self.filter setValue:targetImage forKey:kCIInputTargetImageKey];
+    [self.filter setValue:@(0.5) forKey:kCIInputTimeKey];
+
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+
+    return [self getImage:result];
+}
+// 图形叠加效果
+- (UIImage *)CIAdditionCompositing:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    UIImage *targetImg = [UIImage imageNamed:@"sunli.jpeg"];
+    CIImage *targetImage = [CIImage imageWithCGImage:targetImg.CGImage];
+    [self.filter setValue:targetImage forKey:kCIInputImageKey];
+    [self.filter setValue:image forKey:kCIInputBackgroundImageKey];
+    
+    CIImage *rImage = [self.filter valueForKey:kCIOutputImageKey];
+    return [self getImage:rImage];
+}
+
+// 仿射变换滤摬
+- (UIImage *)CIAffineClamp:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    
+    [self.filter setValue:image forKey:kCIInputImageKey];
+    CGAffineTransform xform = CGAffineTransformMake(1, 1, 0.5, 1, 100, 10);
+    [self.filter setValue:[NSValue valueWithBytes:&xform
+                                         objCType:@encode(CGAffineTransform)] forKey:kCIInputTransformKey];
+    CIImage *result = [self.filter valueForKey:kCIOutputImageKey];
+    CGImageRef rImage = [self.myContext createCGImage:result fromRect:CGRectMake(0, 0, 1090, 1920)];
+    return [UIImage imageWithCGImage:rImage];
 }
 @end

@@ -34,15 +34,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Detail view content goes here" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="0XM-y9-sOw">
-                                <rect key="frame" x="20" y="292" width="560" height="17"/>
+                                <rect key="frame" x="20" y="573" width="560" height="17"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" size="system"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ert-wp-Kjj">
-                                <rect key="frame" x="80" y="96" width="440" height="186"/>
-                                <color key="backgroundColor" red="0.90782257840000002" green="1" blue="0.94703342310000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="20" y="64" width="560" height="499"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="oET-iH-Koq" appends="YES" id="0M5-zi-NKg"/>
@@ -52,13 +52,19 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="top" secondItem="Ert-wp-Kjj" secondAttribute="bottom" constant="10" id="9CQ-2q-xGu"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="0XM-y9-sOw" secondAttribute="bottom" constant="10" id="Hkh-Ap-Txd"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" constant="20" symbolic="YES" id="Tsc-yG-G1q"/>
-                            <constraint firstItem="Ert-wp-Kjj" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" constant="32" id="YHe-SP-6yt"/>
+                            <constraint firstItem="Ert-wp-Kjj" firstAttribute="top" secondItem="SYR-Wa-9uf" secondAttribute="bottom" id="YHe-SP-6yt"/>
                             <constraint firstItem="0XM-y9-sOw" firstAttribute="centerY" secondItem="svH-Pt-448" secondAttribute="centerY" id="jWN-iV-94e"/>
-                            <constraint firstItem="Ert-wp-Kjj" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" constant="60" id="o8p-XP-efT"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Ert-wp-Kjj" secondAttribute="trailing" constant="60" id="qgN-Yk-NjZ"/>
+                            <constraint firstItem="Ert-wp-Kjj" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leadingMargin" id="o8p-XP-efT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ert-wp-Kjj" secondAttribute="trailing" id="qgN-Yk-NjZ"/>
                             <constraint firstAttribute="trailing" secondItem="0XM-y9-sOw" secondAttribute="trailing" constant="20" symbolic="YES" id="tHV-ZD-HQj"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="jWN-iV-94e"/>
+                            </mask>
+                        </variation>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
