@@ -18,7 +18,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.objects = [@[@"CISepiaTone",@"CIHueAdjust",@"CIBumpDistortion"] mutableCopy];
+
+    NSLog(@"%@",[[CIFilter filterWithName:@"CIAccordionFoldTransition"]inputKeys]);
+    
+//    NSLog(@"%@",[CIFilter filterNamesInCategory:kCICategoryBuiltIn]);
+    self.objects = [@[@"CISepiaTone",@"CIHueAdjust",@"CIBumpDistortion",@"CIAccordionFoldTransition"] mutableCopy];
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 

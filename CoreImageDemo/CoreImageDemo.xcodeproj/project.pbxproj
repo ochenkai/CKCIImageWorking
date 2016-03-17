@@ -15,6 +15,7 @@
 		D666CD061C99B95200BE0E1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D666CD051C99B95200BE0E1D /* Assets.xcassets */; };
 		D666CD091C99B95200BE0E1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D666CD071C99B95200BE0E1D /* LaunchScreen.storyboard */; };
 		D666CD121C99BD0C00BE0E1D /* PhotoModifier.m in Sources */ = {isa = PBXBuildFile; fileRef = D666CD111C99BD0C00BE0E1D /* PhotoModifier.m */; };
+		D6E3F0761C9A74C20047462D /* sunli.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = D6E3F0751C9A74C20047462D /* sunli.jpeg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		D666CD0A1C99B95200BE0E1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D666CD101C99BD0C00BE0E1D /* PhotoModifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoModifier.h; sourceTree = "<group>"; };
 		D666CD111C99BD0C00BE0E1D /* PhotoModifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoModifier.m; sourceTree = "<group>"; };
+		D6E3F0751C9A74C20047462D /* sunli.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sunli.jpeg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				D666CD101C99BD0C00BE0E1D /* PhotoModifier.h */,
 				D666CD111C99BD0C00BE0E1D /* PhotoModifier.m */,
 				D666CD021C99B95200BE0E1D /* Main.storyboard */,
+				D6E3F0751C9A74C20047462D /* sunli.jpeg */,
 				D666CD051C99B95200BE0E1D /* Assets.xcassets */,
 				D666CD071C99B95200BE0E1D /* LaunchScreen.storyboard */,
 				D666CD0A1C99B95200BE0E1D /* Info.plist */,
@@ -147,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D666CD091C99B95200BE0E1D /* LaunchScreen.storyboard in Resources */,
+				D6E3F0761C9A74C20047462D /* sunli.jpeg in Resources */,
 				D666CD061C99B95200BE0E1D /* Assets.xcassets in Resources */,
 				D666CD041C99B95200BE0E1D /* Main.storyboard in Resources */,
 			);
@@ -310,6 +314,7 @@
 				D666CD0F1C99B95200BE0E1D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -29,7 +29,9 @@
 + (instancetype)shareModifier {
     static PhotoModifier *modifier = nil;
     @synchronized(self) {
-        modifier = [[PhotoModifier alloc]init];
+        if (modifier == nil) {
+            modifier = [[PhotoModifier alloc]init];
+        }
     }
     return modifier;
 }
@@ -88,6 +90,26 @@
     CGImageRef cgImage = [self.myContext createCGImage:result fromRect:extent];   // 5
     UIImage *rImg = [UIImage imageWithCGImage:cgImage];
     CGImageRelease(cgImage);
+    return rImg;
+}
+
+// 褶皱过度
+- (UIImage *)CIAccordionFoldTransition:(UIImage *)img {
+    CIImage *image = [CIImage imageWithCGImage:img.CGImage];
+    UIImage *targetImg = [UIImage imageNamed:@"sunli.jpeg"];
+    CIImage *targetImage = [CIImage imageWithCGImage:targetImg.CGImage];
+    CIFilter *filter = [CIFilter filterWithName:@"CIAccordionFoldTransition"];
+    [filter setDefaults];
+    
+    [filter setValue:image forKey:kCIInputImageKey];
+    [filter setValue:targetImage forKey:kCIInputTargetImageKey];
+    [filter setValue:@(0.5) forKey:kCIInputTimeKey];
+
+    CIImage *result = [filter valueForKey:kCIOutputImageKey];
+    CGRect extent = [result extent];
+    CGImageRef rImage = [self.myContext createCGImage:result fromRect:extent];
+    UIImage *rImg = [UIImage imageWithCGImage:rImage];
+    CGImageRelease(rImage);
     return rImg;
 }
 @end

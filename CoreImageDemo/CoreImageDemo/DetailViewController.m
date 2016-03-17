@@ -45,16 +45,17 @@
 //    NSLog(@"%@",image);
     self.imageView.image = image;
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self configFilter];
+    
+    [self performSelectorInBackground:@selector(configFilter) withObject:nil];
 }
 - (void)configFilter {
     UIImage *image = self.imageView.image;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         UIImage *reImage = [PhotoModifier modifyImage:image WithFilterName:self.detailItem];
         self.imageView.image = reImage;
     });
-
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
